@@ -7,6 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class Controller {
 
     private final ProductService productservice;
@@ -14,12 +15,12 @@ public class Controller {
         this.productservice = productservice;
     }
 
-    @GetMapping
+    @GetMapping("/products")
     public List<Products> GetProducts(){
         return productservice.GetAllProducts();
     }
 
-    @PostMapping("add_product")
+    @PostMapping("/add_product")
     public void AddProduct(@RequestBody Products product){
         productservice.AddProduct(product);
     }
@@ -29,11 +30,14 @@ public class Controller {
         productservice.UpdateProduct(product);
     }
 
-    @DeleteMapping("{Prodid}")
+    @DeleteMapping("/{Prodid}")
     public void DeleteProductById(@RequestBody Integer Prodid){
         productservice.DeleteProduct(Prodid);
     }
 
-
+    @GetMapping("/{id}")
+    public Products findById(@PathVariable int id){
+        return productservice.findById(id);
+    }
 
 }
