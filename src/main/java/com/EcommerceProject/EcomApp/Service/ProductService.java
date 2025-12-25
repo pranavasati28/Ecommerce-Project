@@ -4,7 +4,8 @@ import com.EcommerceProject.EcomApp.Models.Products;
 import com.EcommerceProject.EcomApp.Repository.ProductsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -22,8 +23,11 @@ public class ProductService {
     public Products findById(Integer id){
         return Repo.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
     }
-    public void AddProduct(Products product){
-        Repo.save(product);
+    public Products AddProduct(Products product , MultipartFile imageFile) throws IOException {
+        product.setImageName(imageFile.getOriginalFilename());
+        product.setImageType(imageFile.getContentType());
+        product.setImageData(imageFile.getBytes());
+        return Repo.save(product);
     }
 
     public void UpdateProduct(Products product){

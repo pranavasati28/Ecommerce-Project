@@ -2,7 +2,12 @@ package com.EcommerceProject.EcomApp.Controller;
 
 import com.EcommerceProject.EcomApp.Models.Products;
 import com.EcommerceProject.EcomApp.Service.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -16,13 +21,18 @@ public class Controller {
     }
 
     @GetMapping("/products")
-    public List<Products> GetProducts(){
-        return productservice.GetAllProducts();
+    public ResponseEntity<List<Products>> GetProducts(){
+        return new ResponseEntity<>(productservice.GetAllProducts(), HttpStatus.OK);
     }
 
     @PostMapping("/add_product")
-    public void AddProduct(@RequestBody Products product){
-        productservice.AddProduct(product);
+    public ResponseEntity<?> AddProduct(@RequestPart Products product,
+                                        @RequestPart MultipartFile imageFile){
+        try {
+            return new ResponseEntity<>(productservice.AddProduct(product, imageFile) , HttpStatus.CREATED);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PutMapping
