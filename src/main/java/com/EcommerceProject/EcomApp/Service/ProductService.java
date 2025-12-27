@@ -20,8 +20,9 @@ public class ProductService {
     public List<Products> GetAllProducts(){
         return Repo.findAll();
     }
+
     public Products findById(Integer id){
-        return Repo.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        return Repo.findById(id).get();
     }
     public Products AddProduct(Products product , MultipartFile imageFile) throws IOException {
         product.setImageName(imageFile.getOriginalFilename());
@@ -30,12 +31,17 @@ public class ProductService {
         return Repo.save(product);
     }
 
-    public void UpdateProduct(Products product){
-        Repo.save(product);
+    public Products UpdateProduct(Products product, MultipartFile imagefile) throws IOException {
+        product.setImageName(imagefile.getOriginalFilename());
+        product.setImageType(imagefile.getContentType());
+        product.setImageData(imagefile.getBytes());
+        return Repo.save(product);
     }
 
     public void DeleteProduct(Integer Id){
         Repo.deleteById(Id);
     }
+
+
 
 }

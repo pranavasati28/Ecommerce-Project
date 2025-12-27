@@ -26,8 +26,8 @@ public class Products {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date releaseDate;
 
-    private boolean availability;
-    private Integer quantity;
+    private boolean productAvailable;
+    private Integer stockQuantity;
     
     private String imageName;
     private String imageType;
